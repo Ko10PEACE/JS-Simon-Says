@@ -31,7 +31,7 @@ $(".btn").click(function() {
 //If correct, trigger array (random color) +1
 function checkAnswer(currentLevel){
     if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
-        if(userClickedPattern.lenth === gamePattern.length){
+        if(userClickedPattern.length === gamePattern.length){
             setTimeout(function() {
                 nextSequence();
             }, 1000);
@@ -39,11 +39,14 @@ function checkAnswer(currentLevel){
     } else {
         //if player presses wrong array sequence trigger game over
         playSound("wrong");
-        $("body").addClass("game-over").delay(200).removeClass("game-over");
+        $("body").addClass("game-over");
         $("#level-title").text("Game Over, Press Any Key to Restart");
-        $(document).keypress(function() {startOver()});
+        setTimeout(function() {
+        $("body").removeClass("game-over");
+        }, 200);
+        startOver();
     }
-};
+}
 
 //main game function 
 function nextSequence() {
@@ -55,7 +58,7 @@ function nextSequence() {
     //randomize which button lights up
     var randomNumber = Math.floor(Math.random()*4);
     //gets color from array and assigns to variable
-    var randomChosenColor = buttonColours[randomNumber];
+    var randomChosenColor = buttonColors[randomNumber];
     // adds the color to the game pattern
     gamePattern.push(randomChosenColor);
     // flashes the chosen color by selecting the ID
@@ -66,8 +69,10 @@ function nextSequence() {
 
 //Changes looked of pressed button
 function animatePress(currentColor){
-    $('#' + currentColor).addClass("pressed").delay(100).removeClass("pressed");
-
+    $('#' + currentColor).addClass("pressed");
+    setTimeout(function() {
+        $('#' + currentColor).removeClass("pressed");
+        }, 100);
 }
 //Plays Sound function
 function playSound(name) {
@@ -80,4 +85,4 @@ function startOver(){
     level = 0;
     gamePattern = [];
     started = false;
-};
+}
